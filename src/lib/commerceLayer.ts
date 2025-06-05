@@ -5,14 +5,14 @@ import Cookies from "js-cookie";
 
 // Configuration should come from environment variables
 const config = {
-  clientId:
-    process.env.COMMERCE_LAYER_CLIENT_ID ||
-    "0CRja4YI8vq9u-AtpToGhB-U5CgmSIzb_OSypl8F_g8",
-  scope: process.env.COMMERCE_LAYER_SCOPE || "market:id:ElDkXhpEGg",
-  organization:
-    process.env.COMMERCE_LAYER_ORGANIZATION || "felipe-s-organization",
+  clientId: process.env.NEXT_PUBLIC_COMMERCE_LAYER_CLIENT_ID ?? "",
+  scope: process.env.NEXT_PUBLIC_COMMERCE_LAYER_SCOPE ?? "",
+  organization: process.env.NEXT_PUBLIC_COMMERCE_LAYER_ORGANIZATION ?? "",
 };
 
+if (!config.clientId || !config.scope || !config.organization) {
+  throw new Error("Missing Commerce Layer environment variables.");
+}
 // Cookie name for auth data
 const AUTH_COOKIE_NAME = "commerce_layer_auth";
 

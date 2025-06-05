@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState, useCallback } from "react";
 import Cookies from "js-cookie";
 
-const API_URL = "https://felipe-s-organization.commercelayer.io/api";
+const API_URL = process.env.NEXT_PUBLIC_COMMERCE_LAYER_ENDPOINT + "/api";
 const CART_ID_SESSION_KEY = "mini_ecommerce_cart_id";
 
 function getAccessTokenFromCookie() {
