@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mini Ecommerce Task
 
-## Getting Started
+## Setup Instructions
 
-First, run the development server:
+1. **Install dependencies:**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+   ```bash
+   npm install
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Configure Environment Variables:**
+   find the instructions on how to setup these on commercelayer here:
+   [Guided organization setup.](https://docs.commercelayer.io/core/onboarding/guided-setup)
+   [API Credentials.](https://docs.commercelayer.io/core/api-credentials)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+   .env.local:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+   ```bash
+   NEXT_PUBLIC_COMMERCE_LAYER_CLIENT_ID=<YOUR CLIENT ID HERE>
+   NEXT_PUBLIC_COMMERCE_LAYER_ENDPOINT=https://<YOUR ORGANIZATION SLUG HERE>.commercelayer.io
+   NEXT_PUBLIC_COMMERCE_LAYER_SCOPE=<MARKET SCOPE HERE>
+   ```
 
-## Learn More
+3. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+   The app will be available at [http://localhost:3000](http://localhost:3000).
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Architecture & Key Design Decisions
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Framework:** Built with Next.js 13+ (App Router, React 18, TypeScript).
+- **SSR:**
+  - As it's a simple mini e-commerce project, I've used the base page as the PLP.
+  - The product list page (`/src/app/page.tsx`) uses server-side rendering to fetch and display products. Data is fetched on the server using an async function and passed to the client.
+- **Dynamic Routing:**
+  - Product detail pages are implemented using dynamic routes (`/src/app/products/[productId]/page.tsx`). Clicking a product navigates to its detail page, which fetches and displays detailed product info (name, description, price, image, etc.).
+- **Add to Cart:**
+  - Both PLP and PDP includes an "Add to Cart" button, allowing users to add the selected product (with quantity) to their cart.
+- **Cart:**
+  - Cart state is managed globally using React context (`/src/context/CartContext.tsx`). The cart icon and overlay are always accessible, showing current cart contents and allowing item removal.
+- **Commerce Layer Integration:**
+  - Product and price data are fetched from Commerce Layer using their SDK and API. Authentication is handled via cookies and a provider.
+- **Styling:**
+  - Uses Tailwind CSS utility classes for layout and styling.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## File Structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `src/app/page.tsx` — Product Listing Page
+- `src/app/products/[productId]/page.tsx` — Product detail Page(dynamic route using code)
+- `src/components/` — UI components (ProductGrid, CartIcon, CartOverlay, etc.)
+- `src/context/CartContext.tsx` — Cart state management
+- `src/lib/commerceLayer.ts` — API utilities for Commerce Layer (Fetch Products)
+- `src/providers/CommerceLayerAuthProvider.tsx` — Handles authentication
+
+---
+
+## Extra notes on Architecture and design
+
+- I have started building this using the SDK, but found out that some features would be harder to implement using only the SDK, so I decided to go for the REST Api for managing and fetching cart data.
+
+- In the end, I have opted to use a Cart Context to manage everything cart related. With this approach I can add different contexts to manage different domains within my website.
