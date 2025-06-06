@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const dynamic = "force-dynamic";
 
 import { getProducts } from "@/lib/commerceLayer";
 import { ProductGrid } from "@/components/ProductGrid";
 interface Props {
-  searchParams?: Record<string, string | string[] | undefined>;
+  searchParams?: any;
 }
 
 export default async function Home(props: Props) {
