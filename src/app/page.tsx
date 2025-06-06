@@ -7,7 +7,7 @@ interface Props {
 }
 
 export default async function Home(props: Props) {
-  const searchParams = await props.searchParams;
+  const searchParams = props.searchParams;
   const pageParam = Array.isArray(searchParams?.page)
     ? searchParams.page[0]
     : searchParams?.page;
