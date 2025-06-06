@@ -2,17 +2,15 @@ export const dynamic = "force-dynamic";
 
 import { getProducts } from "@/lib/commerceLayer";
 import { ProductGrid } from "@/components/ProductGrid";
-
 interface Props {
   searchParams?: Record<string, string | string[] | undefined>;
 }
 
 export default async function Home(props: Props) {
-  const searchParams = props.searchParams;
+  const searchParams = await props.searchParams;
   const pageParam = Array.isArray(searchParams?.page)
     ? searchParams.page[0]
     : searchParams?.page;
-
   const page = parseInt(pageParam || "1", 10);
   const productsResponse = await getProducts(page);
   const products = productsResponse || [];

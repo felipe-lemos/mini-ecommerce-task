@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getProductById } from "@/lib/commerceLayer";
 import Image from "next/image";
 import { useCartContext } from "@/context/CartContext";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import React from "react";
 
 interface Product {
@@ -15,12 +15,12 @@ interface Product {
   code: string;
 }
 
-interface ProductDetailPageProps {
-  params: { productId: string };
-}
-
-export default function ProductDetailPage({ params }: ProductDetailPageProps) {
-  const { productId } = params;
+export default function ProductDetailPage({
+  params,
+}: {
+  params: Promise<{ productId: string }>;
+}) {
+  const { productId } = use(params);
 
   const [adding, setAdding] = useState(false);
   const [success, setSuccess] = useState(false);
